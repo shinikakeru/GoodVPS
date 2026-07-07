@@ -70,7 +70,27 @@ sed -i 's/^PrintLastLog.*/PrintLastLog no/' /etc/ssh/sshd_config
 sleep 2
 printf "\033c"
 
-# 4. Создаем картинку
+# 4. Настройка фаервола (UFW)
+echo "Настройка фаервола..."
+echo "--------------------------------------------------------"
+
+# Установка и подавление любого вывода (stdout и stderr)
+if ! command -v ufw > /dev/null; then
+    apt-get update -qq > /dev/null 2>&1
+    apt-get install -y -qq ufw > /dev/null 2>&1
+fi
+
+# Настройка правил без лишнего шума
+ufw --force reset > /dev/null 2>&1
+ufw default deny incoming > /dev/null 2>&1
+ufw default allow outgoing > /dev/null 2>&1
+ufw allow 1024/tcp > /dev/null 2>&1
+ufw --force enable > /dev/null 2>&1
+
+# Перезапуск SSH
+systemctl restart ssh
+
+# 5. Создаем картинку
 cat << 'EOF' | tee /etc/motd
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣷⢸⣿⣿⡜⢯⣷⡌⡻⣿⣿⣿⣆⢈⠻⠿⢿⣿⣿⣿⣿⣿⣿⣷⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡁⢳⣿⣿⣿⣿⣿⣿⡜⣿⣿⣧⢀⢻⣷⠰⠈⢿⣿⣿⣧⢣⠉⠑⠪⢙⠿⠿⠿⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -109,26 +129,6 @@ else
     echo "Вход по паролю включен"
 fi
 echo "--------------------------------------------------------"
-
-# 5. Настройка фаервола (UFW)
-echo "Настройка фаервола..."
-echo "--------------------------------------------------------"
-
-# Установка и подавление любого вывода (stdout и stderr)
-if ! command -v ufw > /dev/null; then
-    apt-get update -qq > /dev/null 2>&1
-    apt-get install -y -qq ufw > /dev/null 2>&1
-fi
-
-# Настройка правил без лишнего шума
-ufw --force reset > /dev/null 2>&1
-ufw default deny incoming > /dev/null 2>&1
-ufw default allow outgoing > /dev/null 2>&1
-ufw allow 1024/tcp > /dev/null 2>&1
-ufw --force enable > /dev/null 2>&1
-
-# Перезапуск SSH
-systemctl restart ssh
 
 if [ "$KEY_ADDED" = true ]; then
     if [ "$PASSWORD_DISABLED" = true ]; then
