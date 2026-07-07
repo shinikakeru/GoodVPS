@@ -12,16 +12,14 @@ echo "Начинаем настройку..."
 echo "Меняем порт на 1024..."
 sed -i 's/^#*Port.*/Port 1024/' /etc/ssh/sshd_config
 
-# 2. Добавляем ключ (создаем его, если нет)
-echo "Настройка SSH-ключа для root..."
+# 2. Добавляем ПУБЛИЧНЫЙ ключ
+echo "Добавляем публичный ключ в authorized_keys..."
 mkdir -p /root/.ssh
-# Генерируем ключ, если его еще нет
-if [ ! -f /root/.ssh/id_ed25519 ]; then
-    ssh-keygen -t ed25519 -f /root/.ssh/id_ed25519 -N ""
-fi
-# Добавляем публичный ключ в authorized_keys
-cat /root/.ssh/id_ed25519.pub >> /root/.ssh/authorized_keys
 chmod 700 /root/.ssh
+
+# ВАЖНО: Вставьте сюда содержимое вашего ПУБЛИЧНОГО ключа (id_ed25519_new_vps.pub)
+echo "ssh-ed25519 ВАШ_КЛЮЧ_ИЗ_ФАЙЛА_PUB_СЮДА user@pc" >> /root/.ssh/authorized_keys
+
 chmod 600 /root/.ssh/authorized_keys
 
 # 3. Убираем лишние надписи
