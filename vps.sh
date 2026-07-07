@@ -24,16 +24,16 @@ if [ -n "$USER_SSH_KEY" ]; then
 
     # Проверяем, существует ли уже такая строка в файле
     if grep -Fxq "$USER_SSH_KEY" /root/.ssh/authorized_keys 2>/dev/null; then
-        clear
+        printf "\033c"
 	echo "Этот ключ уже есть в authorized_keys, пропускаем."
     else
         echo "$USER_SSH_KEY" >> /root/.ssh/authorized_keys
-	clear
+	printf "\033c"
         echo "Ключ успешно добавлен!"
     fi
     chmod 600 /root/.ssh/authorized_keys
 else
-    clear
+    printf "\033c"
     echo "Ввод ключа пропущен."
 fi
 
