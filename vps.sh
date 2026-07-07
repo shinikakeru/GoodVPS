@@ -12,15 +12,22 @@ echo "Начинаем настройку..."
 echo "Меняем порт на 1024..."
 sed -i 's/^#*Port.*/Port 1024/' /etc/ssh/sshd_config
 
-# 2. Добавляем ПУБЛИЧНЫЙ ключ
-echo "Добавляем ваш ключ в authorized_keys..."
+# 2. Добавляем ПУБЛИЧНЫЙ ключ интерактивно
+echo "--------------------------------------------------------"
+echo "ПОЖАЛУЙСТА, ВСТАВЬТЕ ВАШ ПУБЛИЧНЫЙ КЛЮЧ (id_ed25519.pub):"
+echo "--------------------------------------------------------"
+read -r USER_SSH_KEY
+
+if [ -z "$USER_SSH_KEY" ]; then
+    echo "Ошибка: ключ не введен!"
+    exit 1
+fi
+
 mkdir -p /root/.ssh
 chmod 700 /root/.ssh
-
-# ВАЖНО: Вставьте сюда строку из ВАШЕГО id_ed25519_new_vps.pub
-echo "ssh-ed25519 ВАШ_КЛЮЧ_ИЗ_ФАЙЛА_PUB_СЮДА user@pc" >> /root/.ssh/authorized_keys
-
+echo "$USER_SSH_KEY" >> /root/.ssh/authorized_keys
 chmod 600 /root/.ssh/authorized_keys
+echo "Ключ успешно добавлен!"
 
 # 3. Убираем лишние надписи
 echo "Очистка баннеров..."
