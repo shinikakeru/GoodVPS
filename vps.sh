@@ -67,8 +67,6 @@ echo "--------------------------------------------------------"
 chmod -x /etc/update-motd.d/*
 sed -i 's/^PrintMotd.*/PrintMotd no/' /etc/ssh/sshd_config
 sed -i 's/^PrintLastLog.*/PrintLastLog no/' /etc/ssh/sshd_config
-sleep 2
-printf "\033c"
 
 # 4. Настройка фаервола (UFW)
 echo "Настройка фаервола..."
@@ -89,6 +87,9 @@ ufw --force enable > /dev/null 2>&1
 
 # Перезапуск SSH
 systemctl restart ssh
+
+sleep 2
+printf "\033c"
 
 # 5. Создаем картинку
 cat << 'EOF' | tee /etc/motd
