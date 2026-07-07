@@ -43,7 +43,7 @@ chmod -x /etc/update-motd.d/*
 sed -i 's/^PrintMotd.*/PrintMotd no/' /etc/ssh/sshd_config
 sed -i 's/^PrintLastLog.*/PrintLastLog no/' /etc/ssh/sshd_config
 
-# 4. Создаем вашу картинку
+# 4. Создаем картинку
 cat << 'EOF' | tee /etc/motd
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣷⢸⣿⣿⡜⢯⣷⡌⡻⣿⣿⣿⣆⢈⠻⠿⢿⣿⣿⣿⣿⣿⣿⣷⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡁⢳⣿⣿⣿⣿⣿⣿⡜⣿⣿⣧⢀⢻⣷⠰⠈⢿⣿⣿⣧⢣⠉⠑⠪⢙⠿⠿⠿⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -67,7 +67,7 @@ cat << 'EOF' | tee /etc/motd
 EOF
 
 echo "--------------------------------------------------------"
-echo "ТЕКУЩИЕ КЛЮЧИ В authorized_keys:"
+echo "Текущие ключи В authorized_keys:"
 if [ -f "/root/.ssh/authorized_keys" ]; then
     cat /root/.ssh/authorized_keys
 else
@@ -75,12 +75,22 @@ else
 fi
 echo "--------------------------------------------------------"
 
-# 5. Перезапуск
-echo "Настройка фаервола и перезапуск SSH..."
-if command -v ufw > /dev/null; then
-    ufw allow 1024/tcp
-    ufw reload
+# 5. Настройка фаервола
+echo "Настройка фаервола (UFW)..."
+
+# Установка, если не установлен
+if ! command -v ufw > /dev/null; then
+    apt-get update && apt-get install -y ufw
 fi
+
+# Настройка правил
+ufw --force reset              # Сбрасываем все настройки к заводским
+ufw default deny incoming      # Запрещаем всё входящее по умолчанию
+ufw default allow outgoing     # Разрешаем исходящее
+ufw allow 1024/tcp             # Открываем только наш новый SSH порт
+ufw --force enable             # Включаем фаервол
+
+# Перезапуск SSH
 systemctl restart ssh
 
 echo "Готово! Ваш публичный ключ добавлен, порт изменен на 1024, баннеры очищены."
