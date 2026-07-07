@@ -6,6 +6,11 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+# 0. Автоматический перезапуск сервисов (убирает вопросы needrestart)
+mkdir -p /etc/needrestart/conf.d
+echo '$nrconf{restart} = "a";' > /etc/needrestart/conf.d/autopilot.conf
+echo '$nrconf{kernelinc} = "no";' >> /etc/needrestart/conf.d/autopilot.conf
+
 echo "Начинаем настройку..."
 
 # 1. Меняем порт в конфигурации SSH
@@ -75,25 +80,27 @@ else
 fi
 echo "--------------------------------------------------------"
 
-# 5. Настройка фаервола
+# 5. Настройка фаервола 
 echo "Настройка фаервола (UFW)..."
 
-# Установка, если не установлен
+# Установка и подавление вывода
 if ! command -v ufw > /dev/null; then
-    apt-get update && apt-get install -y ufw
+    apt-get update -qq > /dev/null
+    apt-get install -y -qq ufw > /dev/null
 fi
 
 # Настройка правил
-ufw --force reset              # Сбрасываем все настройки к заводским
-ufw default deny incoming      # Запрещаем всё входящее по умолчанию
-ufw default allow outgoing     # Разрешаем исходящее
-ufw allow 1024/tcp             # Открываем только наш новый SSH порт
-ufw --force enable             # Включаем фаервол
+ufw --force reset > /dev/null
+ufw default deny incoming > /dev/null
+ufw default allow outgoing > /dev/null
+ufw allow 1024/tcp > /dev/null
+ufw --force enable > /dev/null
 
 # Перезапуск SSH
 systemctl restart ssh
 
 echo "Готово! Ваш публичный ключ добавлен, порт изменен на 1024, баннеры очищены."
 
-# Принудительное удаление файла vps.sh, если он существует в текущей папке
+# Принудительное удаление файла vps.sh и autopilot.conf
 [ -f "vps.sh" ] && rm "vps.sh"
+rm -f /etc/needrestart/conf.d/autopilot.conf
