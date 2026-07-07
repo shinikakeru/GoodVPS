@@ -1,5 +1,5 @@
 #!/bin/bash
-
+exec < /dev/tty
 # Убедимся, что мы root
 if [[ $EUID -ne 0 ]]; then
    echo "Этот скрипт должен быть запущен от root"
