@@ -31,6 +31,6 @@ wget -qO- "https://raw.githubusercontent.com/shinikakeru/Auto-Set-VPS/main/vps.s
 3. Скрывает баннеры **PrintMotd** и **PrintLastLog**, которые идут по умолчанию в **/etc/ssh/sshd_config**
 4. Создает свой баннер
 5. Автоматически настраивает фаервол, оставляет открытым **только порт для ssh**
-6. Вывод текущие ключи на сервере в **/root/.ssh/authorized_keys**
+6. Выводит текущие ключи на сервере в **/root/.ssh/authorized_keys**
 7. Перезапускает службы
 8. Чистит файлы за собой
