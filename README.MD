@@ -18,6 +18,11 @@ wget -qO- "https://raw.githubusercontent.com/shinikakeru/Auto-Set-VPS/main/vps.s
   <img src="example2.png">
 </p>
 
+<p align="center">
+  <img src="example3.png">
+</p>
+
+
 ## Что делает скрипт
 
 1. Меняет порт на 1024 для ssh в **/etc/ssh/sshd\_config**
