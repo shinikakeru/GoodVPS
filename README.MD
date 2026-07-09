@@ -3,7 +3,7 @@
 1. Зайти на сервер по ssh от имени **root**
 2. Ввести команду
 ```bash
-wget -qO- "https://raw.githubusercontent.com/shinikakeru/Auto-Set-VPS/main/vps.sh?cache=$(date +%s)" > setup.sh && chmod +x setup.sh && sudo ./setup.sh ; rm -f setup.sh
+wget -qO- "https://raw.githubusercontent.com/shinikakeru/Auto-Set-VPS/main/vps.sh?cache=$(date +%s)" > setup.sh && chmod +x setup.sh && sudo ./setup.sh
 ```
 3. Все выполнится автоматически **(Добавить ПУБЛИЧНЫЙ ключ нужно вручную)**
 
