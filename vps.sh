@@ -86,6 +86,17 @@ echo '$nrconf{kernelinc} = "no";' >> /etc/needrestart/conf.d/autopilot.conf
 # Полный сброс терминала
 printf "\033c"
 
+# Проверяем, что curl и wget есть в системе
+if command -v curl > /dev/null 2>&1; then
+    DOWNLOADER="curl -s"
+elif command -v wget > /dev/null 2>&1; then
+    DOWNLOADER="wget -qO-"
+else
+    echo "Ошибка: не найден ни curl, ни wget. Установите один из них."
+    exit 1
+fi
+VERSION=$($DOWNLOADER "https://raw.githubusercontent.com/shinikakeru/Auto-Set-VPS/main/version.txt")
+echo "Запущена версия скрипта: $VERSION"
 echo "Начинаем настройку..."
 
 # 1. Меняем порт в конфигурации SSH
