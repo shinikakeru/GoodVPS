@@ -34,6 +34,7 @@ setup_ssh_access() {
         fi
     else
         printf "\033c"
+        sed -i 's/^#*PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
         echo "Ввод ключа пропущен, вход по паролю включен."
     fi
 }
