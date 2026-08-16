@@ -24,16 +24,16 @@ curl -sL "https://raw.githubusercontent.com/shinikakeru/Auto-Set-VPS/main/vps.sh
 ## Что делает скрипт
 
 <table>
-  <tr><td align="right">1.</td><td>Меняет порт на 1024 для ssh в <b>/etc/ssh/sshd_config</b></td></tr>
-  <tr><td align="right">2.</td><td>Добавляет SSH ключ в <b>/root/.ssh/authorized_keys</b> <b>(опционально)</b></td></tr>
-  <tr><td align="right">3.</td><td>Отключает/Включает вход по паролю <b>(опционально только для подключения по SSH ключу)</b></td></tr>
-  <tr><td align="right">4.</td><td>Скрывает баннеры <b>PrintMotd</b> и <b>PrintLastLog</b>, которые идут по умолчанию в <b>/etc/ssh/sshd_config</b></td></tr>
-  <tr><td align="right">5.</td><td>Создает свой баннер</td></tr>
-  <tr><td align="right">6.</td><td>Автоматически настраивает фаервол, оставляет открытым <b>только порт для ssh</b></td></tr>
-  <tr><td align="right">7.</td><td>Скачивает и настраивает fail2ban для <b>1024 порта</b></td></tr>
-  <tr><td align="right">8.</td><td>Выводит текущие ключи на сервере в <b>/root/.ssh/authorized_keys</b></td></tr>
-  <tr><td align="right">9.</td><td>Перезапускает службы</td></tr>
-  <tr><td align="right">10.</td><td>Чистит файлы за собой</td></tr>
+  <tr><td align="left">1.</td><td>Меняет порт на 1024 для ssh в <b>/etc/ssh/sshd_config</b></td></tr>
+  <tr><td align="left">2.</td><td>Добавляет SSH ключ в <b>/root/.ssh/authorized_keys</b> <b>(опционально)</b></td></tr>
+  <tr><td align="left">3.</td><td>Отключает/Включает вход по паролю <b>(опционально только для подключения по SSH ключу)</b></td></tr>
+  <tr><td align="left">4.</td><td>Скрывает баннеры <b>PrintMotd</b> и <b>PrintLastLog</b>, которые идут по умолчанию в <b>/etc/ssh/sshd_config</b></td></tr>
+  <tr><td align="left">5.</td><td>Создает свой баннер</td></tr>
+  <tr><td align="left">6.</td><td>Автоматически настраивает фаервол, оставляет открытым <b>только порт для ssh</b></td></tr>
+  <tr><td align="left">7.</td><td>Скачивает и настраивает fail2ban для <b>1024 порта</b></td></tr>
+  <tr><td align="left">8.</td><td>Выводит текущие ключи на сервере в <b>/root/.ssh/authorized_keys</b></td></tr>
+  <tr><td align="left">9.</td><td>Перезапускает службы</td></tr>
+  <tr><td align="left">10.</td><td>Чистит файлы за собой</td></tr>
 </table>
 
 ## Полезные команды
