@@ -32,7 +32,7 @@ curl -sL "https://raw.githubusercontent.com/shinikakeru/Auto-Set-VPS/main/vps.sh
 7. Скачивает и настраивает fail2ban для **1024 порта**
 8. Выводит текущие ключи на сервере в **/root/.ssh/authorized_keys**
 9. Перезапускает службы
-10. Чистит файлы за собой
+ 10. Чистит файлы за собой
 
 ## Полезные команды
 **Для powershell**
