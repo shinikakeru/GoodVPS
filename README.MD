@@ -24,16 +24,22 @@ curl -sL "https://raw.githubusercontent.com/shinikakeru/Auto-Set-VPS/main/vps.sh
 ## Что делает скрипт
 
 <table>
-  <tr><td align="center">1.</td><td>Меняет порт на 1024 для ssh в <b>/etc/ssh/sshd_config</b></td></tr>
-  <tr><td align="center">2.</td><td>Добавляет SSH ключ в <b>/root/.ssh/authorized_keys</b> <b>(опционально)</b></td></tr>
-  <tr><td align="center">3.</td><td>Отключает/Включает вход по паролю <b>(опционально только для подключения по SSH ключу)</b></td></tr>
-  <tr><td align="center">4.</td><td>Скрывает баннеры <b>PrintMotd</b> и <b>PrintLastLog</b>, которые идут по умолчанию в <b>/etc/ssh/sshd_config</b></td></tr>
-  <tr><td align="center">5.</td><td>Создает свой баннер</td></tr>
-  <tr><td align="center">6.</td><td>Автоматически настраивает фаервол, оставляет открытым <b>только порт для ssh</b></td></tr>
-  <tr><td align="center">7.</td><td>Скачивает и настраивает fail2ban для <b>1024 порта</b></td></tr>
-  <tr><td align="center">8.</td><td>Выводит текущие ключи на сервере в <b>/root/.ssh/authorized_keys</b></td></tr>
-  <tr><td align="center">9.</td><td>Перезапускает службы</td></tr>
-  <tr><td align="center">10.</td><td>Чистит файлы за собой</td></tr>
+  <tr><td align="center">1.</td><td>Настройка часового пояса на <b>Москву</b></td></tr>
+  <tr><td align="center">2.</td><td>Включение <b>TCP BBR</b></td></tr>
+  <tr><td align="center">3.</td><td>Переадресация IP</td></tr>
+  <tr><td align="center">4.</td><td>Защита от сетевых атак (SYN-flood, IP spoofing)</td></tr>
+  <tr><td align="center">5.</td><td>Защита от ICMP-манипуляций</td></tr>
+  <tr><td align="center">6.</td><td>Увеличение буферов сети для высокой скорости <b>VPN</b></td></tr>
+  <tr><td align="center">7.</td><td>Меняет порт на 1024 для ssh в <b>/etc/ssh/sshd_config</b></td></tr>
+  <tr><td align="center">8.</td><td>Добавляет SSH ключ в <b>/root/.ssh/authorized_keys</b> <b>(опционально)</b></td></tr>
+  <tr><td align="center">9.</td><td>Отключает/Включает вход по паролю <b>(опционально только для подключения по SSH ключу)</b></td></tr>
+  <tr><td align="center">10.</td><td>Скрывает баннеры <b>PrintMotd</b> и <b>PrintLastLog</b>, которые идут по умолчанию в <b>/etc/ssh/sshd_config</b></td></tr>
+  <tr><td align="center">11.</td><td>Создает свой баннер</td></tr>
+  <tr><td align="center">12.</td><td>Автоматически настраивает фаервол, оставляет открытым <b>только порт для ssh</b></td></tr>
+  <tr><td align="center">13.</td><td>Скачивает и настраивает fail2ban для <b>1024 порта</b></td></tr>
+  <tr><td align="center">14.</td><td>Выводит текущие ключи на сервере в <b>/root/.ssh/authorized_keys</b></td></tr>
+  <tr><td align="center">15.</td><td>Перезапускает службы</td></tr>
+  <tr><td align="center">16.</td><td>Чистит файлы за собой</td></tr>
 </table>
 
 ## Полезные команды
