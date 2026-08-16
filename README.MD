@@ -51,3 +51,11 @@ cat $HOME\.ssh\имя_вашего_ключа.pub
 ```powershell
 mkdir $HOME\.ssh
 ```
+4. Проверка работы ufw
+```powershell
+sudo ufw status
+```
+5. Проверка работы fail2ban
+```powershell
+sudo fail2ban-client status sshd
+```
