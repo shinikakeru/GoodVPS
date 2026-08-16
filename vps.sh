@@ -136,13 +136,29 @@ ufw --force enable > /dev/null 2>&1
 echo "Настройка Fail2ban..."
 echo "--------------------------------------------------------"
 
+# Определяем IP-адрес текущего пользователя из сессии SSH
+CURRENT_IP=$(echo "$SSH_CLIENT" | awk '{print $1}')
+if [ -z "$CURRENT_IP" ]; then
+    CURRENT_IP=$(echo "$SSH_CONNECTION" | awk '{print $1}')
+fi
+
+# Установка Fail2ban, если не установлен
 if ! command -v fail2ban-client > /dev/null; then
     apt-get update -qq > /dev/null 2>&1
     apt-get install -y -qq fail2ban > /dev/null 2>&1
 fi
 
-# Создание локальной конфигурации для SSH
-cat << 'EOF' > /etc/fail2ban/jail.local
+# список исключений (localhost + IP пользователя)
+IGNORE_IPS="127.0.0.1/8 ::1"
+if [ -n "$CURRENT_IP" ]; then
+    IGNORE_IPS="$IGNORE_IPS $CURRENT_IP"
+fi
+
+# Запись конфигурации в jail.local
+cat << EOF > /etc/fail2ban/jail.local
+[DEFAULT]
+ignoreip = $IGNORE_IPS
+
 [sshd]
 enabled = true
 port = 1024
@@ -153,6 +169,7 @@ findtime = 10m
 bantime = 1h
 EOF
 
+# Перезапуск службы
 systemctl enable fail2ban > /dev/null 2>&1
 systemctl restart fail2ban > /dev/null 2>&1
 
