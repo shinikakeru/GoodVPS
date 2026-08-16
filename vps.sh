@@ -85,6 +85,8 @@ export NEEDRESTART_MODE=a
 mkdir -p /etc/needrestart/conf.d
 echo '$nrconf{restart} = "a";' > /etc/needrestart/conf.d/autopilot.conf
 echo '$nrconf{kernelinc} = "no";' >> /etc/needrestart/conf.d/autopilot.conf
+# Настройка часового пояса
+timedatectl set-timezone Europe/Moscow
 # Полный сброс терминала
 printf "\033c"
 
@@ -100,15 +102,50 @@ fi
 VERSION=$($DOWNLOADER "https://raw.githubusercontent.com/shinikakeru/Auto-Set-VPS/main/version.txt")
 echo "Запущена версия скрипта: $VERSION"
 echo "Начинаем настройку..."
+echo "--------------------------------------------------------"
 
-# 1. Меняем порт в конфигурации SSH
+# 1. Включение BBR и защита ядра (sysctl) для VPN
+echo "Оптимизация сети, BBR и системных параметров..."
+echo "--------------------------------------------------------"
+
+cat << 'EOF' > /etc/sysctl.d/99-custom.conf
+# --- Включение TCP BBR ---
+net.core.default_qdisc = fq
+net.ipv4.tcp_congestion_control = bbr
+
+# --- Переадресация IP (КРИТИЧНО ДЛЯ VPN) ---
+net.ipv4.ip_forward = 1
+net.ipv6.conf.all.forwarding = 1
+
+# --- Защита от сетевых атак (SYN-flood, IP spoofing) ---
+net.ipv4.tcp_syncookies = 1
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.conf.default.rp_filter = 1
+
+# --- Защита от ICMP-манипуляций (redirects) ---
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.default.accept_redirects = 0
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+
+# --- Увеличение буферов сети для высокой скорости VPN ---
+net.core.rmem_max = 16777216
+net.core.wmem_max = 16777216
+net.ipv4.tcp_rmem = 4096 87380 16777216
+net.ipv4.tcp_wmem = 4096 65536 16777216
+EOF
+
+# Применяем все параметры ядра
+sysctl --system > /dev/null 2>&1
+
+# 2. Меняем порт в конфигурации SSH
 echo "Меняем порт ssh на 1024..."
 sed -i 's/^#*Port.*/Port 1024/' /etc/ssh/sshd_config
 
-# 2. Добавляем ключ и спрашиваем про пароль
+# 3. Добавляем ключ и спрашиваем про пароль
 setup_ssh_access
 
-# 3. Убираем лишние надписи
+# 4. Убираем лишние надписи
 echo "--------------------------------------------------------"
 echo "Очистка баннеров..."
 echo "--------------------------------------------------------"
@@ -116,7 +153,7 @@ chmod -x /etc/update-motd.d/*
 sed -i 's/^PrintMotd.*/PrintMotd no/' /etc/ssh/sshd_config
 sed -i 's/^PrintLastLog.*/PrintLastLog no/' /etc/ssh/sshd_config
 
-# 4. Настройка фаервола (UFW)
+# 5. Настройка фаервола (UFW)
 echo "Настройка фаервола..."
 echo "--------------------------------------------------------"
 
@@ -132,7 +169,7 @@ ufw default allow outgoing > /dev/null 2>&1
 ufw allow 1024/tcp > /dev/null 2>&1
 ufw --force enable > /dev/null 2>&1
 
-# 5. Установка и настройка Fail2ban
+# 6. Установка и настройка Fail2ban
 echo "Настройка Fail2ban..."
 echo "--------------------------------------------------------"
 
@@ -179,7 +216,7 @@ systemctl restart ssh
 sleep 2
 printf "\033c"
 
-# 6. Создаем картинку
+# 7. Создаем картинку
 cat << 'EOF' | tee /etc/motd
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣷⢸⣿⣿⡜⢯⣷⡌⡻⣿⣿⣿⣆⢈⠻⠿⢿⣿⣿⣿⣿⣿⣿⣷⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡁⢳⣿⣿⣿⣿⣿⣿⡜⣿⣿⣧⢀⢻⣷⠰⠈⢿⣿⣿⣧⢣⠉⠑⠪⢙⠿⠿⠿⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -202,9 +239,9 @@ cat << 'EOF' | tee /etc/motd
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⠁⣛⠓⢒⣒⣢⡭⢁⡈⠿⠿⠟⠹⠛⠁⠀⠀⠀⠰⠃⠂⠀⠀⠀
 EOF
 
-# 7. Вывод
+# 8. Вывод
 print_summary
 
-# 8. Очистка
+# 9. Очистка
 rm -f "$0"
 rm -f /etc/needrestart/conf.d/autopilot.conf
