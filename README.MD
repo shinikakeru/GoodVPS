@@ -43,7 +43,7 @@ curl -sL "https://raw.githubusercontent.com/shinikakeru/Auto-Set-VPS/main/vps.sh
 </table>
 
 ## Полезные команды
-**Для powershell**
+### **Для powershell**
 
 **1. Подключиться по SSH с указанием ключа и порта 1024 (если имя ключа по умолчанию)**
 ```powershell
@@ -66,7 +66,7 @@ cat $HOME\.ssh\имя_вашего_ключа.pub
 mkdir $HOME\.ssh
 ```
 
-**Для Linux (на сервере)**
+### **Для Linux (на сервере)**
 
 **1. Проверить работы BBR (должно вернуть bbr)**
 ```bash
