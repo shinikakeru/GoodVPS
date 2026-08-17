@@ -44,24 +44,50 @@ curl -sL "https://raw.githubusercontent.com/shinikakeru/Auto-Set-VPS/main/vps.sh
 
 ## Полезные команды
 **Для powershell**
-
-1. Создаст ключ формата ed25519 с вашим названием по пути `C:\Users\Имя_Пользователя\.ssh\`
+1. Подключиться по SSH с указанием ключа и порта 1024:
+  1.1 Стандартное подключение (если имя ключа по умолчанию)
+  ```powershell
+  ssh root@IP_СЕРВЕРА -p 1024
+  ```
+  1.2 Если ключ назван по-своему
+  ```powershell
+  ssh -i $HOME\.ssh\имя_вашего_ключа root@IP_СЕРВЕРА -p 1024
+  ```
+2. Создаст ключ формата ed25519 с вашим названием по пути `C:\Users\Имя_Пользователя\.ssh\`
 ```powershell
 ssh-keygen -t ed25519 -f $HOME\.ssh\имя_вашего_ключа
 ```
-2. Сразу открыть публичный ключ
+3. Сразу открыть публичный ключ
 ```powershell
 cat $HOME\.ssh\имя_вашего_ключа.pub
 ```
-3. Если вы создаете ключ впервые, папки .ssh может еще не существовать. В таком случае команда ssh-keygen может выдать ошибку. Если это произойдет, сначала создайте папку командой:
+4. Если вы создаете ключ впервые, папки .ssh может еще не существовать. В таком случае команда ssh-keygen может выдать ошибку. Если это произойдет, сначала создайте папку командой:
 ```powershell
 mkdir $HOME\.ssh
 ```
-4. Проверка работы ufw
-```powershell
+
+**Для bash**
+1. Проверить работы BBR (должно вернуть bbr)
+```bash
+sysctl net.ipv4.tcp_congestion_control
+```
+2. Проверить IP Forwarding для VPN (должно вернуть 1)
+```bash
+sysctl net.ipv4.ip_forward
+```
+3. Проверка работы ufw
+```bash
 sudo ufw status
 ```
-5. Проверка работы fail2ban
-```powershell
+4. Проверка работы fail2ban
+```bash
 sudo fail2ban-client status sshd
+```
+5. Разблокировать забаненный IP в fail2ban
+```bash
+sudo fail2ban-client set sshd unbanip ВАШ_IP
+```
+6. Смотреть логи подключений по SSH в реальном времени
+```bash
+journalctl -u ssh -f
 ```
