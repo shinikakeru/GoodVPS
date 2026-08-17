@@ -48,10 +48,10 @@ curl -sL "https://raw.githubusercontent.com/shinikakeru/Auto-Set-VPS/main/vps.sh
 ```powershell
 ssh root@IP_СЕРВЕРА -p 1024
 ```
-Если ключ назван по-своему
-```powershell
-ssh -i $HOME\.ssh\имя_вашего_ключа root@IP_СЕРВЕРА -p 1024
-```
+   Если ключ назван по-своему
+   ```powershell
+   ssh -i $HOME\.ssh\имя_вашего_ключа root@IP_СЕРВЕРА -p 1024
+   ```
 2. Создаст ключ формата ed25519 с вашим названием по пути `C:\Users\Имя_Пользователя\.ssh\`
 ```powershell
 ssh-keygen -t ed25519 -f $HOME\.ssh\имя_вашего_ключа
