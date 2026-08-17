@@ -48,10 +48,10 @@ curl -sL "https://raw.githubusercontent.com/shinikakeru/Auto-Set-VPS/main/vps.sh
 ```powershell
 ssh root@IP_СЕРВЕРА -p 1024
 ```
-   Если ключ назван по-своему
-   ```powershell
-   ssh -i $HOME\.ssh\имя_вашего_ключа root@IP_СЕРВЕРА -p 1024
-   ```
+  Если ключ назван по-своему
+```powershell
+ssh -i $HOME\.ssh\имя_вашего_ключа root@IP_СЕРВЕРА -p 1024
+```
 2. Создаст ключ формата ed25519 с вашим названием по пути `C:\Users\Имя_Пользователя\.ssh\`
 ```powershell
 ssh-keygen -t ed25519 -f $HOME\.ssh\имя_вашего_ключа
@@ -60,12 +60,12 @@ ssh-keygen -t ed25519 -f $HOME\.ssh\имя_вашего_ключа
 ```powershell
 cat $HOME\.ssh\имя_вашего_ключа.pub
 ```
-4. Если вы создаете ключ впервые, папки .ssh может еще не существовать. В таком случае команда ssh-keygen может выдать ошибку. Если это произойдет, сначала создайте папку командой:
+4. Если вы создаете ключ впервые, папки .ssh может еще не существовать. В таком случае команда ssh-keygen может выдать ошибку. Если это произойдет, сначала создайте папку командой
 ```powershell
 mkdir $HOME\.ssh
 ```
 
-**Для bash**
+**Для Linux (на сервере)**
 1. Проверить работы BBR (должно вернуть bbr)
 ```bash
 sysctl net.ipv4.tcp_congestion_control
